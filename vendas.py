@@ -85,7 +85,7 @@ categorias = ["Meta","Previsão", "Realizado"]
 valores = [meta_vendas, previsao, vendas_realizadas]
 
 ax.bar(categorias, valores, color=["gray","blue", "red" ])
-ax.set_title(f"Comparação Meta x Previsão x Vendas - {data_atual.strftime('%B/%Y')}")
+ax.set_title(f"Comparação Meta x Previsão x Vendas - {dia_atual}/{mes_anterior}/{ano_anterior + 1}")
 ax.set_ylabel("Valor (R$)")
 
 # Exibir os dados filtrados
@@ -97,7 +97,10 @@ st.write(f"# Relatório meta de venda loja {dia_atual}/{mes_anterior}/{ano_anter
 
 divisor()
 
-col1, col2, col3 = st.columns(3)
+#col1, col2, col3 = st.columns(3)
+
+col1, col2 = st.columns(2)
+
 with col1:
    st.write(f"""#### Total de vendas em {mes_anterior}/{ano_anterior}: \n 
             R$ {total_vendas_mes_anterior:,.2f}
@@ -106,9 +109,9 @@ with col2:
    st.write(f"""#### Total das vendas de hoje por filial: \n
             R$ {total_vendas_dia:,.2f}
             """)
-with col3:
-   st.write(f"""#### A meta de venda do mês é: \n 
-            R$ {meta_venda_mês:,.2f}""") 
+#with col3:
+#   st.write(f"""#### A meta de venda do mês é: \n 
+#            R$ {meta_venda_mês:,.2f}""") 
    
 divisor()
 
