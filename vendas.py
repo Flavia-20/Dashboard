@@ -77,16 +77,28 @@ meta_vendas = meta_venda_mês
 
 #previsão de vendas 
 previsao = (vendas_realizadas / data_atual.day) * 30
-
+print(f" vendas realizadas {vendas_realizadas}")
 
 # Criar gráfico de comparação Meta x Previsão x Vendas
 fig, ax = plt.subplots(figsize=(8, 3))
-categorias = ["Meta","Previsão", "Realizado"]
+categorias = ["Meta","Previsão", "Acumulado Vendas"]
 valores = [meta_vendas, previsao, vendas_realizadas]
 
 ax.bar(categorias, valores, color=["gray","blue", "red" ])
 ax.set_title(f"Comparação Meta x Previsão x Vendas - {dia_atual}/{mes_anterior}/{ano_anterior + 1}")
 ax.set_ylabel("Valor (R$)")
+
+#Acumulado do ano no periodo  anterior
+dt_atual = pd.to_datetime(datetime.date.today())
+#dat_atual = data_atual.day
+mes_ant = data_atual.month
+ano_ant = data_atual.year - 1
+df_mes_ant = df[(df["FILIAL"] == filial_selecionada) &
+                     (df["DATA_VENDA"].dt.month == mes_ant) & 
+                     (df["DATA_VENDA"].dt.year == ano_ant) &
+                     (df["DATA_VENDA"].dt.day <= dt_atual.day)]
+
+total_vendas_periodo_anterior = df_mes_ant["VALOR_VENDA"].sum()
 
 # Exibir os dados filtrados
 def divisor():
@@ -120,6 +132,7 @@ st.pyplot(fig)
 st.write(f"**Meta de vendas:** R$ {meta_vendas:,.2f}")
 st.write(f"**Previsão de vendas:** R$ {previsao:,.2f}")
 st.write(f"**Vendas realizadas:** R$ {vendas_realizadas:,.2f}")
+#st.write(f"**Vendas periodo anterior:** R${total_vendas_periodo_anterior:,.2f}")
 
 divisor()
 
@@ -128,3 +141,6 @@ st.write("### Gráfico de vendas por periodo")
 st.line_chart(df_filtrado.set_index("DATA_VENDA")["VALOR_VENDA"])   
 
 st.dataframe(df_filtrado)
+
+
+st.write(f" vendas periodo anterior: {total_vendas_periodo_anterior:,.2f}")
